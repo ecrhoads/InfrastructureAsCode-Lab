@@ -8,7 +8,7 @@ If you have Terraform, Visual Studio Code, Visual Studio 2019, and/or Azure CLI 
 
 **Terraform Setup**
 1. Download and Unzip the Terraform package for your OS: https://www.terraform.io/downloads.html
-    -NOTE: The Terraform binary should be unzipped to a root folder location where you intend to perform work on your laptop (C:\Temp\Terraform as an example)
+    * NOTE: The Terraform binary should be unzipped to a root folder location where you intend to perform work on your laptop (C:\Temp\Terraform as an example)
 2. Navigate to: Control Panel > System > System Settings > Environment Variables
 3. Click edit on the PATH variable.
 4. Include the path where the terraform binary was unzipped.
@@ -265,7 +265,6 @@ We've created the infrastructure for an application, but how do we marry this wi
 
 The description of this application setup will be brief, as it is only used to demonstrate how to bind both the infrastructure and development sides together.
 
-
 ### 3.1: Setup the Project
 
 First, we are going to create a new ASP.NET MVC Project and add the CosmosDB libraries.
@@ -318,10 +317,10 @@ Now we are going to create 3 Views (Item Index, New Item, and Edit Item) which w
 
 7. Perform the following in the Add View:
 
--Name: Index
--Template: List
--Model class: Item (todo.Models)
--Layout Page: ~/Views/Shared/_Layout.cshtml
+* Name: Index
+* Template: List
+* Model class: Item (todo.Models)
+* Layout Page: ~/Views/Shared/_Layout.cshtml
 
 8. Repeat step 7 for New Item view, replacing both the Name and Template values with "Create"
 
