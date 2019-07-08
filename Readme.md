@@ -261,7 +261,7 @@ We've created the infrastructure for an application, but how do we marry this wi
 10. Click on the CosmosDB resource we created. Under Settings, click "Keys".
 11. Copy the URI and the PRIMARY KEY values a notepad. We will use these later.
 
-## Module 3: Create an ASP.NET MVC Application*
+## Module 3: Create an ASP.NET MVC Application
 
 The description of this application setup will be brief, as it is only used to demonstrate how to bind both the infrastructure and development sides together.
 
@@ -585,4 +585,4 @@ We are going to build, test, and then deploy the application we created in the p
 
 This concludes the Infrastructure as Code Lab.
 
-***The ASP.NET MVC Application Configuration Instructions used here to illustrate how Infrastructure as Code and Development can be integrated together, were taken from this Microsoft tutorial: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-dotnet-application.**
+*The ASP.NET MVC Application and Application Configuration instructions used this Microsoft tutorial: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-dotnet-application as a reference.
