@@ -1,8 +1,8 @@
-#Infrastructure as Code Lab
+# Infrastructure as Code Lab
 
 The purpose of this lab is to walk you through creating a terraform module which will deploy the necessary infrastructure for an Azure-based web application. At the end of this lab, you will be able to reach the application on a public url and perform basic interaction.
 
-##Getting Started
+## Getting Started
 
 If you have Terraform, Visual Studio Code, Visual Studio 2019, and/or Azure CLI already on your workstation, you can skip these sections.
 
@@ -36,11 +36,11 @@ If you have Terraform, Visual Studio Code, Visual Studio 2019, and/or Azure CLI 
 2. Type `az account show`. Ensure the "name" property is "KiZAN Production Azure".
 3. Copy the "id" (This is the Subscription ID) and the "tenantId" property values to a text file. We will use these later in the lab.
 
-##Module 1: Create a Terraform Module
+## Module 1: Create a Terraform Module
 
 In this section we are going to create a new terraform module which can be re-used to create identical application infrastructure for a web application using CosmosDB as a backend.
 
-###1.1: Setup the Local Repo
+### 1.1: Setup the Local Repo
 First, we need to setup the folder structure for our repository. We will include a modules folder and a 'dev' folder for our environment.
 
 1. Open Visual Studio Code, then click File, Open Folder...
@@ -52,7 +52,7 @@ First, we need to setup the folder structure for our repository. We will include
 7. Repeat Step 6, but name the new file "vars.tf".
 8. Within "dev/" click New File and name it "main.tf". Files in different folders can re-use names without any conflicts.
 
-###1.2: Add Terraform Resources
+### 1.2: Add Terraform Resources
 For our web application infrastructure "stamp" we are going to need 4 core resources in Azure. A Resource Group, an Application Service Plan, an Application Service, and a CosmosDB.
 
 1. To Create a new resource group in the East US 2 location, open your "_modules/cosmos_web_app/main.tf file and paste the following code:
@@ -121,7 +121,7 @@ resource "azurerm_cosmosdb_account" "db" {
 
 When parameters of a resource have multiple/sub-parameters, they are encapsulated with `{}`. In this case, CosmosDB has a multi-property parameter for consistency_policy and geo_location.
 
-###1.3: Generalize the module
+### 1.3: Generalize the module
 We have created a module which will deploy a basic version of all the resources we need. BUT, we cannot re-use this module yet. There are certain parameters we have hard-coded which will prevent us from using this module in different ways. Let's change that by using variables.
 
 1. Open the vars.tf file created earlier.
@@ -213,7 +213,7 @@ resource "azurerm_cosmosdb_account" "db" {
 
 Notice how we obtain the random integer by supplying "${random_integer.ri.result}". This is a built-in resource in Terraform which will produce a random value between the declared min and max values. This is being used to ensure we have a unique namespace for our cosmosdb resource. 
 
-##Module 2: Use the Terraform Module
+## Module 2: Use the Terraform Module
 
 The module is now usable. So let's use it!
 
@@ -261,12 +261,12 @@ We've created the infrastructure for an application, but how do we marry this wi
 10. Click on the CosmosDB resource we created. Under Settings, click "Keys".
 11. Copy the URI and the PRIMARY KEY values a notepad. We will use these later.
 
-##Module 3: Create an ASP.NET MVC Application
+## Module 3: Create an ASP.NET MVC Application*
 
 The description of this application setup will be brief, as it is only used to demonstrate how to bind both the infrastructure and development sides together.
 
 
-###3.1: Setup the Project
+### 3.1: Setup the Project
 
 First, we are going to create a new ASP.NET MVC Project and add the CosmosDB libraries.
 
@@ -277,7 +277,7 @@ First, we are going to create a new ASP.NET MVC Project and add the CosmosDB lib
 5. In the Solution Explorer, right click the project name "todo", then select "Manage NuGet Packages".
 6. Search for "Microsoft.Azure.DocumentDB" and click to install this library for CosmosDB.
 
-###3.2: Setup the MVC Components
+### 3.2: Setup the MVC Components
 
 Here we are going to setup the models, views, and controllers for the web application.
 
@@ -327,7 +327,7 @@ Now we are going to create 3 Views (Item Index, New Item, and Edit Item) which w
 
 9. Repeat step 7 for Edit Item view, replacing both the Name and Template values with "Edit"
 
-###3.3: Wire CosmosDB into Code
+### 3.3: Wire CosmosDB into Code
 
 1. In Solution Explorer, right-click the project, click Add, Class. Name the class "DocumentDBRepository" and click Add.
 
@@ -571,7 +571,7 @@ public static async Task<Document> UpdateItemAsync(string id, T item)
  }
 ```
 
-###3.4: Test and Deploy the Application
+### 3.4: Test and Deploy the Application
 
 We are going to build, test, and then deploy the application we created in the previous sections.
 
@@ -585,3 +585,5 @@ We are going to build, test, and then deploy the application we created in the p
 8. Visit your new web application backed by cosmos db by navigating to the FQDN of the azure web app that is created by default.
 
 This concludes the Infrastructure as Code Lab.
+
+*The ASP.NET MVC Application Configuration Instructions used here to illustrate how Infrastructure as Code and Development can be integrated together, were taken from this Microsoft tutorial: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-dotnet-application.
