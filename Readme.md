@@ -585,4 +585,4 @@ We are going to build, test, and then deploy the application we created in the p
 
 This concludes the Infrastructure as Code Lab.
 
-*The ASP.NET MVC Application Configuration Instructions used here to illustrate how Infrastructure as Code and Development can be integrated together, were taken from this Microsoft tutorial: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-dotnet-application.
+***The ASP.NET MVC Application Configuration Instructions used here to illustrate how Infrastructure as Code and Development can be integrated together, were taken from this Microsoft tutorial: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-dotnet-application.**
