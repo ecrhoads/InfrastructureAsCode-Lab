@@ -59,7 +59,7 @@ For our web application infrastructure "stamp" we are going to need 4 core resou
 
 ```
 #Resource Group
-resource "azurerm_resource_group" "app-rg" {
+resource "azurerm_resource_group" "app_rg" {
     name = "tf-todo-dev-rg"
     location = "east us 2"
 }
@@ -73,7 +73,7 @@ This resource only requires two parameters, which we have filled in here. There 
 resource "azurerm_app_service_plan" "standard_app_plan" {
     name = "tf-standard-plan"
     location = "${azurerm_resource_group.application_rg.location}"
-    resource_group_name = "${azurerm_resource_group.application_rg.name}"
+    resource_group_name = "${azurerm_resource_group.app_rg.name}"
     sku {
         tier = "Basic"
         size = "B1"
@@ -89,8 +89,8 @@ Notice the "location" and "resource_group_name" properties are using built-in sy
 resource "azurerm_app_service" "web_app_service" {
     name = "tf-todo-dev-app"
     location = "east us 2"
-    resource_group_name = "${azurerm_resource_group.application_rg.name}"
-    app_service_plan_id = "${azurerm_app_service_plan.app_plan.id}"
+    resource_group_name = "${azurerm_resource_group.app_rg.name}"
+    app_service_plan_id = "${azurerm_app_service_plan.standard_app_plan.id}"
 }
 ```
 
@@ -102,7 +102,7 @@ While we are placing resources in a logical order, Terraform is a declarative la
 resource "azurerm_cosmosdb_account" "db" {
   name                = "tf-cosmos-db"
   location            = "east us 2"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = "${azurerm_resource_group.app_rg.name}"
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
@@ -147,7 +147,7 @@ You declare variables in Terraform by supplying "variable" and then a name for t
 4. To generalize the resource group, we are going to change the name and location parameters to use the variables we just created. Replace the entire "azurerm_resource_group" block with the following code:
 
 ```
-resource "azurerm_resource_group" "app-rg" {
+resource "azurerm_resource_group" "app_rg" {
     name = "tf-${var.application_short_name}-${var.environment}-rg"
     location = "${var.location}"
 }
@@ -161,7 +161,7 @@ Variables can be used by specifying ${var.<name of variable>}. You can string mu
 resource "azurerm_app_service_plan" "standard_app_plan" {
     name = "tf-standard-plan"
     location = "${var.location}"
-    resource_group_name = "${azurerm_resource_group.application_rg.name}"
+    resource_group_name = "${azurerm_resource_group.app_rg.name}"
     sku {
         tier = "Basic"
         size = "B1"
@@ -174,8 +174,8 @@ resource "azurerm_app_service_plan" "standard_app_plan" {
 resource "azurerm_app_service" "web_app_service" {
     name = "tf-${var.application_short_name}-${var.environment}-app"
     location = "${var.location}"
-    resource_group_name = "${azurerm_resource_group.application_rg.name}"
-    app_service_plan_id = "${azurerm_app_service_plan.app_plan.id}"
+    resource_group_name = "${azurerm_resource_group.app_rg.name}"
+    app_service_plan_id = "${azurerm_app_service_plan.standard_app_plan.id}"
 }
 ```
 
@@ -194,7 +194,7 @@ resource "random_integer" "ri" {
 resource "azurerm_cosmosdb_account" "db" {
   name                = "tf-cosmos-${random_integer.ri.result}-${var.environment}-db"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = "${azurerm_resource_group.app_rg.name}"
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
@@ -252,7 +252,7 @@ Now that we have the file ready to go, we need to deploy the resources.
 
 If the code was written successfully, this should produce a list of all the resources terraform will create in Azure with values (or computed values) supplied. This is a way for us to check what we are deploying and make sure it is right before we actually deploy the resources to Azure.
 
-9. Let's deploy! Type `terraform apply` and press enter. When prompted, type 'y' to confirm you want to deploy the resources.
+9. Let's deploy! Type `terraform apply` and press enter. When prompted, type 'yes' to confirm you want to deploy the resources.
 
 This will take any files in the folder we have selected and run them through the terraform logic. In our case, we told Terraform to use the Azure API to deploy the resources in our custom module into our Tenant and Subscription. When the apply is complete, login to the portal to see the created resources.
 
