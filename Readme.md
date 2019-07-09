@@ -322,9 +322,9 @@ Now we are going to create 3 Views (Item Index, New Item, and Edit Item) which w
 * Model class: Item (todo.Models)
 * Layout Page: ~/Views/Shared/_Layout.cshtml
 
-8. Repeat step 7 for New Item view, replacing both the Name and Template values with "Create"
+8. Repeat steps 6-7 for New Item view, replacing both the Name and Template values with "Create"
 
-9. Repeat step 7 for Edit Item view, replacing both the Name and Template values with "Edit"
+9. Repeat steps 6-7 for Edit Item view, replacing both the Name and Template values with "Edit"
 
 ### 3.3: Wire CosmosDB into Code
 
