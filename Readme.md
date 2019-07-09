@@ -328,6 +328,8 @@ Now we are going to create 3 Views (Item Index, New Item, and Edit Item) which w
 
 ### 3.3: Wire CosmosDB into Code
 
+Now that we have the MVC application basics in place, we are going to add a class that contains all the logic to connect to and use Azure Cosmos DB.
+
 1. In Solution Explorer, right-click the project, click Add, Class. Name the class "DocumentDBRepository" and click Add.
 
 2. Add the following above the namespace declaration:
@@ -401,7 +403,7 @@ public static class DocumentDBRepository<T> where T : class
  }
  ```
 
- 4. We are reading values from configuration, so open the main Web.config file and add the following lines under the <AppSettings> section:
+ 4. We are reading values from configuration, so open the main Web.config file and add the following lines under the `<AppSettings>` section:
 
  ```
  <add key="endpoint" value="enter the URI from the Keys blade of the Azure Portal"/>
@@ -409,10 +411,10 @@ public static class DocumentDBRepository<T> where T : class
  <add key="database" value="ToDoList"/>
  <add key="collection" value="Items"/>
  ```
-
+ 
  5. Update the "endpoint" with the CosmosDB URI copied earlier in this lab, and update the "authKey" with the CosmosDB Primary Key copied earlier in this lab.
 
- 6. We are going to add functionality to display incomplete items in the 'todo list application'. Copy and paste the following code anywhere within the DocumentDBRepository class:
+ 6. That takes care of wiring up interaction with Azure Cosmos DB, now we are going to add functionality to display incomplete items in the 'todo list application'. Copy and paste the following code anywhere within the DocumentDBRepository class:
 
  ```
  public static async Task<IEnumerable<T>> GetItemsAsync(Expression<Func<T, bool>> predicate)
@@ -461,7 +463,7 @@ With:
 
 9. Open Global.asax.cs and add the following line to the Application_Start method: `DocumentDBRepository<todo.Models.Item>.Initialize();`
 
-10. Open App_Start\RouteConfig.cs and locate the line starting with "defaults:" and change it to: `defaults: new { controller = "Item", action = "Index", id = UrlParameter.Optional }`. This tells the application to use Item as the controller and Index as the view.
+10. Open App_Start\RouteConfig.cs and locate the line starting with "defaults:" and change it to: `defaults: new { controller = "Item", action = "Index", id = UrlParameter.Optional }`. This tells the application to use our custom ItemController as the controller and Index as the view instead of the default HomeController and Index.
 
 Now we are going to add functionality to add items into our database. 
 
@@ -570,18 +572,28 @@ public static async Task<Document> UpdateItemAsync(string id, T item)
  }
 ```
 
+The first method handles the HTTP GET when the user clicks on the Edit link from the Index view. The method fetches a document from Cosmos DB and passes it to the Edit view.
+
+The Edit view will then do an HTTP POST to the IndexController.
+
+The second method handles passing the updated object to CosmosDB to be persisted in the database.
+
+This completes setup of the application.
+
 ### 3.4: Test and Deploy the Application
 
 We are going to build, test, and then deploy the application we created in the previous sections.
 
 1. From within Visual Studio, hit F5 to build the application in debug mode.
-2. Click "Create New" and add any values for Name and Description. Leave the completed checkbox empty. Click Create. Create a couple items.
+2. Click "Create New" and add any values for Name and Description. Leave the completed checkbox empty. Click Create. Repeat this process to create a couple items.
 3. Click "Edit" next to an item and mark it as complete.
-4. Now that we have validated, click Ctrl+F5 to stop debugging the app.
+4. Now that we have validated the application functionality, click Ctrl+F5 to stop debugging the app.
 5. To publish the application to Azure, in Solution Explorer, right-click on the project "todo" and click Publish.
 6. Click "Microsoft Azure App Service" and choose "Select Existing".
 7. Ensure the right Subscription is selected, then choose the Resource Group and App Service we created earlier in this lab. Click Create.
-8. Visit your new web application backed by cosmos db by navigating to the FQDN of the azure web app that is created by default.
+8. Visit your new web application backed by cosmos db by navigating to the FQDN of the azure web app that is created by default. 
+
+To recap, we deployed all the infrastructure required for our application to function, we configured a basic web application to interact with CosmosDB, we tested the application, and then we deployed the functioning package to an Azure web application service which provided us with a live URL.
 
 This concludes the Infrastructure as Code Lab.
 
