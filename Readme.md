@@ -232,7 +232,7 @@ Paste the Tenant ID and Subscription ID you copied into a text file at the begin
 
 ```
 module "todo_app" {
-    source = "../_modules/web_cosmos_app/"
+    source = "../_modules/cosmos_web_app/"
 
     application_short_name = "todo"
     environment = "dev"
